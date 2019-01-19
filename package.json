@@ -7,9 +7,15 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "expo": "^32.0.0",
+    "express": "^4.16.4",
+    "firebase": "^5.7.3",
+    "mongoose": "^5.4.5",
+    "nodemon": "^1.18.9",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-elements": "^1.0.0-beta7",
     "react-navigation": "^3.0.9"
   },
   "devDependencies": {

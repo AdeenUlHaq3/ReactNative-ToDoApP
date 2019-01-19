@@ -1,30 +1,39 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Dimensions, Text } from 'react-native';
+import { Button } from 'react-native';
+import firebase from '../../config/Firebase';
 
 export default class Login extends React.Component {
-    static navigationOptions = {
-        header: null
-    };
+    login = async () => {
+        try {
+            const {
+                type,
+                token
+            } = await Expo.Facebook.logInWithReadPermissionsAsync('558885721189776', {
+                permissions: ['public_profile', 'email'],
+            });
+            if (type === 'success') {
+                // Get the user's name using Facebook's Graph API
+                const response = await fetch(`https://graph.facebook.com/me?fields=id,name,picture.type(large),email,about&access_token=${token}`);
 
-    login = () => {
-
+                const credential = firebase.auth.FacebookAuthProvider.credential(token);
+                firebase.auth().signInAndRetrieveDataWithCredential(credential)
+                    .then(() => response.json())
+                    .then(res => this.props.navigation.navigate('Home'))
+                    .catch(error => console.log(error))
+            }
+            else { }
+        } catch ({ message }) {
+            alert(`Facebook Login Error: ${message}`);
+        }
     };
 
     render() {
         return (
-            <View>
-                <View><Text>AVC</Text></View>
-                <TouchableOpacity onPress={this.login}>
-                    <Text>ABC</Text>
-                </TouchableOpacity>
-            </View>
+            <Button
+                onPress={this.login}
+                title='Facebook'
+            >
+            </Button>
         );
     }
 }
-
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-
-});
